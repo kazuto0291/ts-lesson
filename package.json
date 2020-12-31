@@ -1,0 +1,23 @@
+{
+  "name": "ts-lesson",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazuto0291/ts-lesson.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kazuto0291/ts-lesson/issues"
+  },
+  "homepage": "https://github.com/kazuto0291/ts-lesson#readme",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
