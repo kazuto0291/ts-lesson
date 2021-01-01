@@ -2,7 +2,7 @@
 class Department {
   // private readonly id: string;//readonlyは値を変更できない
   // name: string;
-  private employees: string[] = []
+  protected employees: string[] = []
 
   constructor(private readonly id: string, public name: string) {//上と下のコメントアウトの部分を省略した書き方
     // this.id = id;
@@ -57,8 +57,20 @@ class AccountingDepartment extends Department {
     console.log(this.reports)
   }
 
+  addEmployee(name: string) {
+    if (name === 'Max') {
+      return;
+    }
+    this.employees.push(name);
+  }
+
 }
 
 const accounting = new AccountingDepartment('d2',[]);
 accounting.addReport('Something');
 accounting.printReports();
+
+accounting.addEmployee('Max');
+accounting.addEmployee('Manu');
+
+accounting.printEmployeeInformation();
