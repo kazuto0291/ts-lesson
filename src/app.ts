@@ -1,15 +1,15 @@
 class Department {
-  private id: string;
-  name: string;
+  // private id: string;
+  // name: string;
   private employees: string[] = []
 
-  constructor(id: string, n: string) {
-    this.id = id;
-    this.name = n;
+  constructor(private id: string, public name: string) {//上と下のコメントアウトの部分を省略した書き方
+    // this.id = id;
+    // this.name = n;
   }
 
   describe(this: Department) {
-    console.log('Department: ' + this.name)
+    console.log(`Department: (${this.id}: ${this.name}`)
   }
 
   addEmployee(employee: string) {
@@ -22,7 +22,7 @@ class Department {
   }
 }
 
-const accounting = new Department('Accounting');
+const accounting = new Department('d1','Accounting');
 console.log(accounting);
 
 accounting.addEmployee('Max');
