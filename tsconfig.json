@@ -12,8 +12,8 @@
     // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     // "declaration": true,                   /* Generates corresponding '.d.ts' file. */
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
-    // "sourceMap": true,                     /* Generates corresponding '.map' file. デバッグに役立つ/検証ツールのsourcがtsファイルになる*/
-    // "outFile": "./",        ddd               /* Concatenate and emit output to single file. */
+    "sourceMap": true,                     /* Generates corresponding '.map' file. デバッグに役立つ/検証ツールのsourcがtsファイルになる*/
+    // "outFile": "./",                       /* Concatenate and emit output to single file. */
     "outDir": "./dist",                        /* Redirect output structure to the directory. コンパイルされたJSファイルの出力先を指定する*/
     "rootDir": "./src",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. ルートディレクトリの設定*/
     // "composite": true,                     /* Enable project compilation */
@@ -71,4 +71,3 @@
   "exclude": ["**/*.dev.ts", "node_modules"],//tsのコンパイル処理に含めたくないファイルを指定する
   // "include": [],//コンパイルするファイルを指定する。
 }
-dddd
