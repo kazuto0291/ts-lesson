@@ -1,7 +1,26 @@
-function generateError(message, code) {
-    throw { message: message, errorCode: code };
-}
-generateError('エラーが発生しました', 500);
-// 値を返さないだけでなく、値を返すことは絶対にありえない
-var result = generateError('エラーが発生しました', 500);
-console.log(result);
+"use strict";
+var Department = /** @class */ (function () {
+    function Department(id, n) {
+        this.employees = [];
+        this.id = id;
+        this.name = n;
+    }
+    Department.prototype.describe = function () {
+        console.log('Department: ' + this.name);
+    };
+    Department.prototype.addEmployee = function (employee) {
+        this.employees.push(employee);
+    };
+    Department.prototype.printEmployeeInformation = function () {
+        console.log(this.employees.length);
+        console.log(this.employees);
+    };
+    return Department;
+}());
+var accounting = new Department('Accounting');
+console.log(accounting);
+accounting.addEmployee('Max');
+accounting.addEmployee('Aun');
+accounting.printEmployeeInformation();
+accounting.describe();
+//# sourceMappingURL=app.js.map
