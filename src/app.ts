@@ -1,9 +1,9 @@
 class Department {
-  // private id: string;
+  // private readonly id: string;//readonlyは値を変更できない
   // name: string;
   private employees: string[] = []
 
-  constructor(private id: string, public name: string) {//上と下のコメントアウトの部分を省略した書き方
+  constructor(private readonly id: string, public name: string) {//上と下のコメントアウトの部分を省略した書き方
     // this.id = id;
     // this.name = n;
   }

@@ -3,7 +3,7 @@ var Department = /** @class */ (function () {
     function Department(id, name) {
         this.id = id;
         this.name = name;
-        // private id: string;
+        // private readonly id: string;//readonlyは値を変更できない
         // name: string;
         this.employees = [];
         // this.id = id;
