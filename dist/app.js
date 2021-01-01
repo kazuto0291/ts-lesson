@@ -23,6 +23,9 @@ var Department = /** @class */ (function () {
         // this.id = id;
         // this.name = n;
     }
+    Department.createEmployee = function (name) {
+        return { name: name };
+    };
     Department.prototype.describe = function () {
         console.log("Department: (" + this.id + "): " + this.name);
     };
@@ -33,6 +36,7 @@ var Department = /** @class */ (function () {
         console.log(this.employees.length);
         console.log(this.employees);
     };
+    Department.fiscalYear = 2020;
     return Department;
 }());
 // 継承
@@ -104,4 +108,6 @@ accounting.printReports();
 accounting.addEmployee('Max');
 accounting.addEmployee('Manu');
 accounting.printEmployeeInformation();
+var employee1 = Department.createEmployee('Tom');
+console.log(employee1, Department.fiscalYear);
 //# sourceMappingURL=app.js.map

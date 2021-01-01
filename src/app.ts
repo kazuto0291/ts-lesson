@@ -1,8 +1,13 @@
 // クラスのプロパティとはクラスの変数です。
 class Department {
+  static fiscalYear = 2020;
   // private readonly id: string;//readonlyは値を変更できない
   // name: string;
-  protected employees: string[] = []
+  protected employees: string[] = [];
+
+  static createEmployee(name: string) {
+    return {name: name};
+  }
 
   constructor(private readonly id: string, public name: string) {//上と下のコメントアウトの部分を省略した書き方
     // this.id = id;
@@ -95,3 +100,7 @@ accounting.addEmployee('Max');
 accounting.addEmployee('Manu');
 
 accounting.printEmployeeInformation();
+
+
+const employee1 = Department.createEmployee('Tom');
+console.log(employee1, Department.fiscalYear)
