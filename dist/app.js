@@ -58,10 +58,32 @@ var AccountingDepartment = /** @class */ (function (_super) {
     function AccountingDepartment(id, reports) {
         var _this = _super.call(this, id, 'Accounting') || this;
         _this.reports = reports;
+        _this.lastReport = reports[0];
         return _this;
     }
+    Object.defineProperty(AccountingDepartment.prototype, "mostRecnetReport", {
+        get: function () {
+            if (this.lastReport) {
+                return this.lastReport;
+            }
+            throw new Error("レポートが見つかりません。");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(AccountingDepartment.prototype, "mostRecentReport", {
+        set: function (value) {
+            if (!value) {
+                throw new Error('正しい値を入れてください');
+            }
+            this.addReport(value);
+        },
+        enumerable: false,
+        configurable: true
+    });
     AccountingDepartment.prototype.addReport = function (text) {
         this.reports.push(text);
+        this.lastReport = text;
     };
     AccountingDepartment.prototype.printReports = function () {
         console.log(this.reports);
@@ -75,7 +97,9 @@ var AccountingDepartment = /** @class */ (function (_super) {
     return AccountingDepartment;
 }(Department));
 var accounting = new AccountingDepartment('d2', []);
+accounting.mostRecentReport = '通気会計レポート';
 accounting.addReport('Something');
+console.log(accounting.mostRecnetReport);
 accounting.printReports();
 accounting.addEmployee('Max');
 accounting.addEmployee('Manu');
