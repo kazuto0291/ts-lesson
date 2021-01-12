@@ -1,12 +1,14 @@
 "use strict";
-// functionオーバロード
-function add(a, b) {
-    if (typeof a === 'string' || typeof b === 'string') {
-        return a.toString() + b.toString();
+// Optional Chaining
+// オプショナルチェーン
+// ネストされたオブジェクト
+var fetchedUserData = {
+    id: 'u1',
+    name: 'user1',
+    job: {
+        title: 'Developer',
+        description: 'TypeScript',
     }
-    return a + b;
-}
-var result3 = add(1, 5);
-var result2 = add('Hello', 'TypeScript');
-result2.split('');
+};
+console.log(fetchedUserData.job.title);
 //# sourceMappingURL=app.js.map
