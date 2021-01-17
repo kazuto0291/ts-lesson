@@ -117,3 +117,33 @@ const p2 = new Product("Book2", 200);
 
 // クラスデコレータとメソッドデコレータは値を返すことができる。
 // クラスデコレーターはconstructor関数(class)を返すことができる。
+
+
+// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      const boundFn = originalMethod.bind(this);
+      return boundFn;
+    }
+  }
+  return adjDescriptor;
+}
+
+class Printer {
+  messge = 'クリックしました！'
+
+  @Autobind
+  showMessage() {
+    console.log(this.messge);
+  }
+}
+
+const p = new Printer();
+
+const button = document.querySelector("button")!;
+button.addEventListener('click', p.showMessage)
