@@ -1,21 +1,24 @@
-// nullish coalescing ooerate--null 合体演算子
-// nullとundefind以外のfalsyな値を取得したいときに使う機能
+// ジェネリック型とは、他の特定の型と結合された型です。
+// Array<string> 配列と文字列
+// Array<number> 配列と数字
+// ジェネリック型が利用されているのは、配列とpromise
+// arrayはどんなデータが格納されているかわかる
+// promiseはどんなデータを返すかわかる
+// ジェネリック型の利用目的
+// ・TypeScriptにおける型安全性を高める事ができる
+// ・自動補完等の開発サポートを向上することができる。
 
 
-const userInput2 = null;
-const userInput3 = '';
+const namesPre: Array<string | number> = [];
+const names: string[] = ['Max', 'Manuel'];
 
 
-const storedData = userInput2 || 'DEFAUT'; //論理or演算子
-// userInput2がfalsy（null,undefind,''）な値のとき二番目の値を取得する書き方
-console.log(storedData)//'DEFAUT'
+const promise: Promise<string> = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('終わりました。')
+  }, 2000);
+})
 
-const storedData3 = userInput3 || 'DEFAUT'; //論理or演算子
-// userInput3が null/undeind な値のときのみ二番目の値を取得する書き方
-console.log(storedData3)//DEFAUT'
-
-
-const storedData2 = userInput3 ?? 'DEFAUT'; //nullish coalescing ooerate--null 合体演算子
-// userInput3が null/undeind な値のときのみ二番目の値を取得する書き方
-console.log(storedData2);//''
-
+promise.then(data => {
+  data.split('');
+})

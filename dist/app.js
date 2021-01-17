@@ -1,15 +1,21 @@
 "use strict";
-// nullish coalescing ooerate--null 合体演算子
-// nullとundefind以外のfalsyな値を取得したいときに使う機能
-var userInput2 = null;
-var userInput3 = '';
-var storedData = userInput2 || 'DEFAUT'; //論理or演算子
-// userInput2がfalsy（null,undefind,''）な値のとき二番目の値を取得する書き方
-console.log(storedData); //'DEFAUT'
-var storedData3 = userInput3 || 'DEFAUT'; //論理or演算子
-// userInput3が null/undeind な値のときのみ二番目の値を取得する書き方
-console.log(storedData3); //DEFAUT'
-var storedData2 = userInput3 !== null && userInput3 !== void 0 ? userInput3 : 'DEFAUT'; //nullish coalescing ooerate--null 合体演算子
-// userInput3が null/undeind な値のときのみ二番目の値を取得する書き方
-console.log(storedData2); //''
+// ジェネリック型とは、他の特定の型と結合された型です。
+// Array<string> 配列と文字列
+// Array<number> 配列と数字
+// ジェネリック型が利用されているのは、配列とpromise
+// arrayはどんなデータが格納されているかわかる
+// promiseはどんなデータを返すかわかる
+// ジェネリック型の利用目的
+// ・TypeScriptにおける型安全性を高める事ができる
+// ・自動補完等の開発サポートを向上することができる。
+var namesPre = [];
+var names = ['Max', 'Manuel'];
+var promise = new Promise(function (resolve, reject) {
+    setTimeout(function () {
+        resolve('終わりました。');
+    }, 2000);
+});
+promise.then(function (data) {
+    data.split('');
+});
 //# sourceMappingURL=app.js.map
