@@ -7,7 +7,7 @@
 // ジェネリック型の利用目的
 // ・TypeScriptにおける型安全性を高める事ができる
 // ・自動補完等の開発サポートを向上することができる。
-
+// ・関数の引数を柔軟にするために使う
 
 const namesPre: Array<string | number> = [];
 const names: string[] = ['Max', 'Manuel'];
@@ -44,3 +44,20 @@ const mergedObjEx = mergeEx({name: 'Max', hobbies: ['Sports']}, { age: 30 })
 
 console.log(mergedObjEx)
 console.log(mergedObjEx.age)
+
+
+// もう一つのジェネリック
+
+interface Lengthy {
+  length: number;
+}
+
+function countAndDescribe<T extends Lengthy>(element: T): [T, string] { //Tがlengthプロパティーを持っていることを保証する
+  let descriptionText = '値がありません';
+  if (element.length > 0 ){
+    descriptionText = `値は${element.length}個です。`;
+  }
+  return [element, descriptionText];
+}
+
+console.log(countAndDescribe("お疲れさまです"))

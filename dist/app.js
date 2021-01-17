@@ -8,6 +8,7 @@
 // ジェネリック型の利用目的
 // ・TypeScriptにおける型安全性を高める事ができる
 // ・自動補完等の開発サポートを向上することができる。
+// ・関数の引数を柔軟にするために使う
 var namesPre = [];
 var names = ['Max', 'Manuel'];
 var promise = new Promise(function (resolve, reject) {
@@ -31,4 +32,12 @@ function mergeEx(objA, objB) {
 var mergedObjEx = mergeEx({ name: 'Max', hobbies: ['Sports'] }, { age: 30 });
 console.log(mergedObjEx);
 console.log(mergedObjEx.age);
+function countAndDescribe(element) {
+    var descriptionText = '値がありません';
+    if (element.length > 0) {
+        descriptionText = "\u5024\u306F" + element.length + "\u500B\u3067\u3059\u3002";
+    }
+    return [element, descriptionText];
+}
+console.log(countAndDescribe("お疲れさまです"));
 //# sourceMappingURL=app.js.map
