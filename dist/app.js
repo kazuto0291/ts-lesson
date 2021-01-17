@@ -18,4 +18,17 @@ var promise = new Promise(function (resolve, reject) {
 promise.then(function (data) {
     data.split('');
 });
+// 独自のジェネリック型を作る
+function merge(objA, objB) {
+    return Object.assign(objA, objB);
+}
+var mergedObj = merge({ name: 'Max' }, { age: 30 });
+console.log(mergedObj);
+console.log(mergedObj.age);
+function mergeEx(objA, objB) {
+    return Object.assign(objA, objB);
+}
+var mergedObjEx = mergeEx({ name: 'Max', hobbies: ['Sports'] }, { age: 30 });
+console.log(mergedObjEx);
+console.log(mergedObjEx.age);
 //# sourceMappingURL=app.js.map

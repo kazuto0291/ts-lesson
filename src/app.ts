@@ -22,3 +22,25 @@ const promise: Promise<string> = new Promise((resolve, reject) => {
 promise.then(data => {
   data.split('');
 })
+
+// 独自のジェネリック型を作る
+
+function merge<T, U>(objA: T, objB: U) {
+  return Object.assign(objA, objB)
+}
+
+const mergedObj = merge({name: 'Max'}, {age: 30})
+
+console.log(mergedObj)
+console.log(mergedObj.age)
+
+
+
+function mergeEx<T extends object, U extends object>(objA: T, objB: U) {
+  return Object.assign(objA, objB)
+}
+
+const mergedObjEx = mergeEx({name: 'Max', hobbies: ['Sports']}, { age: 30 })
+
+console.log(mergedObjEx)
+console.log(mergedObjEx.age)
