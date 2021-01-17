@@ -6,13 +6,13 @@ function printResult(num) {
     console.log('Result: ' + num);
 }
 function addAndHandle(n1, n2, cb) {
-    var result = n1 + n2;
+    const result = n1 + n2;
     cb(result);
 }
-addAndHandle(10, 20, function (result) {
+addAndHandle(10, 20, (result) => {
     console.log(result);
 });
-var combinevalues;
+let combinevalues;
 combinevalues = add;
 // combinevalues = printResult;
 // combinevalues = 5;
@@ -22,7 +22,7 @@ function sendRequest(data, cb) {
     // ... sending a request with "data"
     return cb({ data: 'Hi there!' });
 }
-sendRequest('Send this!', function (response) {
+sendRequest('Send this!', (response) => {
     console.log(response);
     return true;
 });

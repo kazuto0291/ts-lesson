@@ -8,23 +8,22 @@
 // オブジェクト型の定義がしやすくなる
 // クラスは複数継承できないがインターフェースは複数から継承できる
 // インターフェースはオブジェクト型を定義するが、関数の構造定義に使える。
-var Person = /** @class */ (function () {
-    function Person(n, age) {
+class Person {
+    constructor(n, age) {
         if (n) {
             this.name = n;
         }
         this.age = age;
     }
-    Person.prototype.greet = function (phrase) {
+    greet(phrase) {
         console.log(phrase + ' ' + this.name);
-    };
-    return Person;
-}());
-var user1;
+    }
+}
+let user1;
 user1 = {
     name: 'Max',
     age: 30,
-    greet: function (phrase) {
+    greet(phrase) {
         console.log(phrase + '' + this.name);
     },
 };
