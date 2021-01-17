@@ -92,4 +92,20 @@ objStorage.addItem({ name: 'Tom' });
 objStorage.addItem({ name: 'Aun' });
 objStorage.removeItem({ name: 'Tom' }); //indexOfが参照型のときは-1を返すので最後の値を削除することになる。
 console.log(objStorage.getItem());
+function createCourseGoal(title, description, date) {
+    // return {
+    //   title: title,
+    //   description: description,
+    //   completeUntil: date,
+    // }
+    // partial型−型を緩める
+    var courseGoal = {};
+    courseGoal.title = title;
+    courseGoal.description = description;
+    courseGoal.completeUntil = date;
+    return courseGoal;
+}
+// 下記は文字列の配列ですが、読み取り専用の文字列の配列である
+var namesss = ['Max', 'Anna'];
+namesss.push('Tom'); //
 //# sourceMappingURL=app.js.map

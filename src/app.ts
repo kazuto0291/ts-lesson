@@ -116,4 +116,33 @@ objStorage.addItem({ name: 'Tom'});
 objStorage.addItem({ name: 'Aun'});
 
 objStorage.removeItem({ name: 'Tom'}); //indexOfが参照型のときは-1を返すので最後の値を削除することになる。
-console.log(objStorage.getItem())
+console.log(objStorage.getItem());
+
+
+
+// ジェネリック型のユーティリティのビルドイン
+
+interface CourseGoal {
+  title: string;
+  description: string;
+  completeUntil: Date;
+}
+
+function createCourseGoal(title: string, description: string, date: Date):CourseGoal {
+  // return {
+  //   title: title,
+  //   description: description,
+  //   completeUntil: date,
+  // }
+
+  // partial型−型を緩める
+  let courseGoal: Partial<CourseGoal> = {};
+  courseGoal.title = title;
+  courseGoal.description = description;
+  courseGoal.completeUntil = date;
+  return courseGoal as CourseGoal;
+}
+
+// 下記は文字列の配列ですが、読み取り専用の文字列の配列である
+const namesss: Readonly<string[]> = ['Max', 'Anna'];
+namesss.push('Tom'); //
