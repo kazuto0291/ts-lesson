@@ -72,4 +72,48 @@ function extractAndConvert<T extends object, U extends keyof T>(obj: T, key: U) 
 extractAndConvert({name: 'Max'}, "name");
 
 
+// ジェネリッククラスを作る
+// ジェネリッククラスを使う場面
+// クラスがにとって受け取るもの（item）の型が統一されていることがわかればいい
+// ジェネリック型に型情報を渡すだけで高い柔軟性を得ることができ、高い型安全性(typescriptの型のサポート)も得る
+class DataStorage<T extends string | number | boolean> {
+  private data: T[] = [];
 
+  // dataにitemを追加する関数
+  addItem(item: T) {
+    this.data.push(item);
+  }
+  // dataからitemを削除する関数
+  removeItem(item: T) {
+    if (this.data.indexOf(item) === -1) {
+      return;
+    }
+    this.data.splice(this.data.indexOf(item), 1); //indexOfはプリミティブがたのみ参照型（配列、オブジェクト）は-1をかえす
+  }
+  // dataからitemを取得する関数
+  getItem() {
+    return [...this.data]
+  }
+}
+
+
+const textStorage = new DataStorage<string>();
+textStorage.addItem("data1");
+textStorage.addItem("data2");
+textStorage.addItem("data3");
+textStorage.removeItem("data1");
+console.log(textStorage.getItem());
+
+
+const numberStorage = new DataStorage<number>();
+numberStorage.addItem(12);
+
+
+// 使用時の問題点ーオブジェクトは参照型
+const objStorage = new DataStorage<object>();//union型で使いたいプリミティブ型指定することで参照型のオブジェクトを使用するとエラーが出るようにできる
+objStorage.addItem({ name: 'Max'});
+objStorage.addItem({ name: 'Tom'});
+objStorage.addItem({ name: 'Aun'});
+
+objStorage.removeItem({ name: 'Tom'}); //indexOfが参照型のときは-1を返すので最後の値を削除することになる。
+console.log(objStorage.getItem())
