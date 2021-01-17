@@ -31,12 +31,19 @@ function Logger(logString) {
 // console.log(pers);
 // ======================
 function WithTemplate(template, hookId) {
-    return function (_) {
-        console.log('テンプレートを表示');
-        const hookEl = document.getElementById(hookId);
-        if (hookEl) {
-            hookEl.innerHTML = template;
-        }
+    // return function( _: Function) { //アンダースコアは引数を受け取るけど使わないことを示す
+    return function (originalConstructor) {
+        return class extends originalConstructor {
+            constructor(..._) {
+                super(); //オリジナルのクラスの情報を引き継ぐ
+                console.log('テンプレートを表示');
+                const hookEl = document.getElementById(hookId);
+                if (hookEl) {
+                    hookEl.innerHTML = template;
+                    hookEl.querySelector('h1').textContent = this.name;
+                }
+            }
+        };
     };
 }
 let Person3 = class Person3 {
@@ -101,4 +108,12 @@ __decorate([
     Log3,
     __param(0, Log4)
 ], Product.prototype, "getPriceWithTax", null);
+const p1 = new Product("Book", 100);
+const p2 = new Product("Book2", 200);
+// デコレータの実行タイミングはクラスが定義されたときに実行される。
+// methodがクラスに登録されたときに実行される。
+// デコレータはクラスに機能を追加することができます。
+// デコレータはイベントリスナーじゃない、プロパティーアクセスされたときにも実行されない
+// クラスデコレータとメソッドデコレータは値を返すことができる。
+// クラスデコレーターはconstructor関数(class)を返すことができる。
 //# sourceMappingURL=app.js.map
