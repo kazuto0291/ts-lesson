@@ -61,3 +61,15 @@ function countAndDescribe<T extends Lengthy>(element: T): [T, string] { //Tがle
 }
 
 console.log(countAndDescribe("お疲れさまです"))
+
+
+// key of の制約
+
+function extractAndConvert<T extends object, U extends keyof T>(obj: T, key: U) {
+  return `Value: ${obj[key]}`;  //keyがあると保証されていないのでエラーが出るのでジェネリック型を使いkeyof制約を利用する。
+}
+
+extractAndConvert({name: 'Max'}, "name");
+
+
+

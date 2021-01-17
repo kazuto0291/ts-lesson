@@ -40,4 +40,9 @@ function countAndDescribe(element) {
     return [element, descriptionText];
 }
 console.log(countAndDescribe("お疲れさまです"));
+// key of の制約
+function extractAndConvert(obj, key) {
+    return "Value: " + obj[key]; //keyがあると保証されていないのでエラーが出るのでジェネリック型を使いkeyof制約を利用する。
+}
+extractAndConvert({ name: 'Max' }, "name");
 //# sourceMappingURL=app.js.map
