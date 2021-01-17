@@ -143,15 +143,46 @@ __decorate([
 const p = new Printer();
 const button = document.querySelector("button");
 button.addEventListener('click', p.showMessage);
-// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-// デコレータを使ったバリデーション
-// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+const registeredValidators = {};
+function Required(target, propName) {
+    registeredValidators[target.constructor.name] = Object.assign(Object.assign({}, registeredValidators[target.constructor.name]), { [propName]: ['required'] });
+}
+function PositiveNumber(target, propName) {
+    registeredValidators[target.constructor.name] = Object.assign(Object.assign({}, registeredValidators[target.constructor.name]), { [propName]: ['positive'] });
+}
+function validate(obj) {
+    const objValidatorConfig = registeredValidators[obj.constructor.name];
+    if (!objValidatorConfig) {
+        return true;
+    }
+    let isValid = true; // すべてのプロパティがチェックされるために変数におく
+    for (const prop in objValidatorConfig) {
+        console.log(prop);
+        for (const validator of objValidatorConfig[prop]) {
+            switch (validator) {
+                case 'required':
+                    isValid = isValid && !!obj[prop];
+                    break;
+                case 'positive':
+                    isValid = isValid && obj[prop] > 0;
+                    break;
+            }
+        }
+    }
+    return isValid; //すべてのプロパティがチェックされた結果を返す
+}
 class Course {
     constructor(t, p) {
         this.title = t;
         this.price = p;
     }
 }
+__decorate([
+    Required
+], Course.prototype, "title", void 0);
+__decorate([
+    PositiveNumber
+], Course.prototype, "price", void 0);
 const courseForm = document.querySelector('form');
 courseForm.addEventListener('submit', event => {
     event.preventDefault();
@@ -160,6 +191,10 @@ courseForm.addEventListener('submit', event => {
     const title = titleEl.value;
     const price = +priceEl.value; //+をつけてデータ型をnumber型にキャストする
     const createdCourse = new Course(title, price);
+    if (!validate(createdCourse)) {
+        alert('正しく入力してください！');
+        return;
+    }
     console.log(createdCourse);
 });
 //# sourceMappingURL=app.js.map

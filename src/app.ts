@@ -152,8 +152,55 @@ button.addEventListener('click', p.showMessage)
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // デコレータを使ったバリデーション
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+interface ValidatorConfig {
+  [prop: string]: {
+    [validatableProp: string]: string[] //['required', 'positive']
+  }
+}
+
+const registeredValidators:ValidatorConfig = {};
+
+
+function Required(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {  //constructor-classと同じ-nameをつけるとクラスの名前を取得する
+    ...registeredValidators[target.constructor.name],
+    [propName]: ['required'],
+  }
+}
+
+function PositiveNumber(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [propName]: ['positive'],
+  }
+}
+
+function validate(obj: any) {
+  const objValidatorConfig = registeredValidators[obj.constructor.name]
+  if (!objValidatorConfig) {
+    return true;
+  }
+  let isValid = true; // すべてのプロパティがチェックされるために変数におく
+  for (const prop in objValidatorConfig) {
+    console.log(prop)
+    for (const validator of objValidatorConfig[prop]) {
+      switch (validator) {
+        case 'required':
+          isValid = isValid && !!obj[prop];
+          break;
+        case 'positive':
+          isValid = isValid && obj[prop] > 0;
+          break;
+      }
+    }
+  }
+  return isValid; //すべてのプロパティがチェックされた結果を返す
+}
 class Course {
+  @Required
   title: string;
+  @PositiveNumber
   price: number;
 
   constructor(t: string, p: number) {
@@ -172,5 +219,9 @@ courseForm.addEventListener('submit', event => {
   const price = +priceEl.value; //+をつけてデータ型をnumber型にキャストする
 
   const createdCourse = new Course(title, price);
+  if ( !validate(createdCourse) ) {
+    alert('正しく入力してください！')
+    return;
+  }
   console.log(createdCourse)
 })
