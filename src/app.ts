@@ -12,6 +12,7 @@ class ProjectInput {
     this.element.id = 'user-input'
     this.attach();
   }
+  
 
   private attach() {
     this.hostElement.insertAdjacentElement('afterbegin', this.element);
