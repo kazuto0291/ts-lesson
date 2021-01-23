@@ -41,30 +41,38 @@ class ProjectInput {
 
   /**
    * inputバリデーション関数
-   *
+   * 返り値タプル型またはundifind型
    */
   private gatherUserInput(): [string, string, number] | void {
-    // 入力値を取得
     const enterdTitle = this.titleInputElement.value;
     const enterdDescription = this.descriptionInputElement.value;
     const enterdManday = this.mandayInputElement.value;
     // 取得した値をチェックする処理
     // 空白ではない
-    if (enterdTitle.trim().length === 0 || enterdDescription.trim.length === 0 || enterdManday.trim.length === 0) {
+    if (enterdTitle.trim().length === 0 || enterdDescription.trim().length === 0 || enterdManday.trim().length === 0) {
       alert('入力値が正しくありません。再度お試しください。');
       return;
     } else {
       return [enterdTitle, enterdDescription, +enterdManday];//parseFloat(enterdManday)-numberにする
     }
+  }
 
+  private clearInput() {
+    this.titleInputElement.value = '';
+    this.descriptionInputElement.value = '';
+    this.mandayInputElement.value= '';
   }
 
   @autobind
   private submitHandler(event: Event) {
     event.preventDefault();
     console.log(this.titleInputElement.value)
-    this.titleInputElement.value = ''
     const userInput = this.gatherUserInput();
+    if (Array.isArray(userInput)) { //userInputがタプル型が確かめるために配列かどうか確かめる。
+      const [title, desc, manday] = userInput;
+      console.log(title, desc, manday);
+      this.clearInput();
+    }
   }
   //  privateはclassの内側からしかアクセスできない
   private configure() {
