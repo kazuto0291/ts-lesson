@@ -38,12 +38,33 @@ class ProjectInput {
     this.configure();
     this.attach();
   }
-  
+
+  /**
+   * inputバリデーション関数
+   *
+   */
+  private gatherUserInput(): [string, string, number] | void {
+    // 入力値を取得
+    const enterdTitle = this.titleInputElement.value;
+    const enterdDescription = this.descriptionInputElement.value;
+    const enterdManday = this.mandayInputElement.value;
+    // 取得した値をチェックする処理
+    // 空白ではない
+    if (enterdTitle.trim().length === 0 || enterdDescription.trim.length === 0 || enterdManday.trim.length === 0) {
+      alert('入力値が正しくありません。再度お試しください。');
+      return;
+    } else {
+      return [enterdTitle, enterdDescription, +enterdManday];//parseFloat(enterdManday)-numberにする
+    }
+
+  }
+
   @autobind
-  private submitHandler(event:Event) {
+  private submitHandler(event: Event) {
     event.preventDefault();
     console.log(this.titleInputElement.value)
     this.titleInputElement.value = ''
+    const userInput = this.gatherUserInput();
   }
   //  privateはclassの内側からしかアクセスできない
   private configure() {
