@@ -86,11 +86,25 @@ class ProjectInput {
     const enterdDescription = this.descriptionInputElement.value;
     const enterdManday = this.mandayInputElement.value;
     // 取得した値をチェックする処理
-    // 空白ではない
+    const titleValidatable: Validatable = {
+      value: enterdTitle,
+      required: true,
+    };
+    const descriptionValidatable: Validatable = {
+      value: enterdDescription,
+      required: true,
+      minLength: 5,
+    };
+    const mandayValidatable: Validatable = {
+      value: +enterdManday,
+      required: true,
+      min: 1,
+      max: 1000,
+    };
     if (
-      validate({ value: enterdTitle, required: true, minLength: 5}) &&
-      validate({ value: enterdDescription, required: true, minLength: 5}) &&
-      validate({ value: enterdManday, required: true, minLength: 5})
+      !validate(titleValidatable) ||
+      !validate(descriptionValidatable) ||
+      !validate(mandayValidatable)
       ) {
       alert('入力値が正しくありません。再度お試しください。');
       return;
