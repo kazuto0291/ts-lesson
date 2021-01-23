@@ -1,5 +1,43 @@
 // オブジェクト指向のアプローチですすめる
 
+// Validation:バリデーションのロジック
+// validatabaleのインターフェースを作成
+interface Validatable {
+  value: string | number;
+  // オプションのプロパティーなので？をつける
+  required?: boolean; //矢印？をつけるのと undefiandをつけるのは同じ → boolean | undifind;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+
+// validationの関数を作成
+function validate(validatableInput: Validatable) {
+  let isValid = true;
+  if (validatableInput.required) {
+    // 入力されいるかどうか
+    isValid = isValid && validatableInput.value.toString().trim().length !== 0;
+  }
+  // 最小文字数の制限
+  if (validatableInput.minLength != null && typeof validatableInput.value === 'string') {
+    isValid = isValid && validatableInput.value.length >= validatableInput.minLength;
+  }
+  // 最大文字数の制限
+  if (validatableInput.maxLength != null && typeof validatableInput.value === 'string') {
+    isValid = isValid && validatableInput.value.length <= validatableInput.maxLength;
+  }
+  // 最小値のチェック
+  if (validatableInput.min != null && typeof validatableInput.value === 'number') {
+    isValid = isValid && validatableInput.value >= validatableInput.min;
+  }
+  // 最大値のチェック
+  if (validatableInput.max != null && typeof validatableInput.value === 'number') {
+    isValid = isValid && validatableInput.value <= validatableInput.max;
+  }
+  return isValid;
+}
+
 // autoBind decorator//バインドのデコレーターを作成
 function autobind(
   _target: any,
@@ -49,7 +87,11 @@ class ProjectInput {
     const enterdManday = this.mandayInputElement.value;
     // 取得した値をチェックする処理
     // 空白ではない
-    if (enterdTitle.trim().length === 0 || enterdDescription.trim().length === 0 || enterdManday.trim().length === 0) {
+    if (
+      validate({ value: enterdTitle, required: true, minLength: 5}) &&
+      validate({ value: enterdDescription, required: true, minLength: 5}) &&
+      validate({ value: enterdManday, required: true, minLength: 5})
+      ) {
       alert('入力値が正しくありません。再度お試しください。');
       return;
     } else {

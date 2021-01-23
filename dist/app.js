@@ -6,6 +6,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+// validationの関数を作成
+function validate(validatableInput) {
+    let isValid = true;
+    if (validatableInput.required) {
+        // 入力されいるかどうか
+        isValid = isValid && validatableInput.value.toString().trim().length !== 0;
+    }
+    // 最小文字数の制限
+    if (validatableInput.minLength != null && typeof validatableInput.value === 'string') {
+        isValid = isValid && validatableInput.value.length >= validatableInput.minLength;
+    }
+    // 最大文字数の制限
+    if (validatableInput.maxLength != null && typeof validatableInput.value === 'string') {
+        isValid = isValid && validatableInput.value.length <= validatableInput.maxLength;
+    }
+    // 最小値のチェック
+    if (validatableInput.min != null && typeof validatableInput.value === 'number') {
+        isValid = isValid && validatableInput.value >= validatableInput.min;
+    }
+    // 最大値のチェック
+    if (validatableInput.max != null && typeof validatableInput.value === 'number') {
+        isValid = isValid && validatableInput.value <= validatableInput.max;
+    }
+    return isValid;
+}
 // autoBind decorator//バインドのデコレーターを作成
 function autobind(_target, _methodName, desciptor) {
     const originalMethod = desciptor.value;
@@ -42,7 +67,9 @@ class ProjectInput {
         const enterdManday = this.mandayInputElement.value;
         // 取得した値をチェックする処理
         // 空白ではない
-        if (enterdTitle.trim().length === 0 || enterdDescription.trim().length === 0 || enterdManday.trim().length === 0) {
+        if (validate({ value: enterdTitle, required: true, minLength: 5 }) &&
+            validate({ value: enterdDescription, required: true, minLength: 5 }) &&
+            validate({ value: enterdManday, required: true, minLength: 5 })) {
             alert('入力値が正しくありません。再度お試しください。');
             return;
         }
