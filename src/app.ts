@@ -3,6 +3,9 @@ class ProjectInput {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLFormElement;
+  titleInputElement: HTMLInputElement;
+  descriptionInputElement: HTMLInputElement;
+  mandayInputElement: HTMLInputElement;
   constructor() {
     this.templateElement = document.getElementById('project-input')! as HTMLTemplateElement;
     this.hostElement = document.getElementById('app')! as HTMLDivElement;
