@@ -6,7 +6,7 @@ class ProjectInput {
   titleInputElement: HTMLInputElement;
   descriptionInputElement: HTMLInputElement;
   mandayInputElement: HTMLInputElement;
-  constructor() {
+  constructor() {// constructorは、要素の参照を行う
     this.templateElement = document.getElementById('project-input')! as HTMLTemplateElement;
     this.hostElement = document.getElementById('app')! as HTMLDivElement;
 
@@ -16,9 +16,19 @@ class ProjectInput {
     this.titleInputElement = this.element.querySelector('#title') as HTMLInputElement;
     this.descriptionInputElement = this.element.querySelector('#description') as HTMLInputElement;
     this.mandayInputElement = this.element.querySelector('#manday') as HTMLInputElement;
+    this.configure();
     this.attach();
   }
   
+  private submitHandler(event:Event) {
+    event.preventDefault();
+    console.log(this.titleInputElement.value)
+    this.titleInputElement.value = ''
+  }
+  //  privateはclassの内側からしかアクセスできない
+  private configure() {
+    this.element.addEventListener('submit', this.submitHandler.bind(this))
+  }
 
   private attach() {
     this.hostElement.insertAdjacentElement('afterbegin', this.element);

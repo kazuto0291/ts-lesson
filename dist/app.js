@@ -10,7 +10,17 @@ class ProjectInput {
         this.titleInputElement = this.element.querySelector('#title');
         this.descriptionInputElement = this.element.querySelector('#description');
         this.mandayInputElement = this.element.querySelector('#manday');
+        this.configure();
         this.attach();
+    }
+    submitHandler(event) {
+        event.preventDefault();
+        console.log(this.titleInputElement.value);
+        this.titleInputElement.value = '';
+    }
+    //  privateはclassの内側からしかアクセスできない
+    configure() {
+        this.element.addEventListener('submit', this.submitHandler.bind(this));
     }
     attach() {
         this.hostElement.insertAdjacentElement('afterbegin', this.element);
