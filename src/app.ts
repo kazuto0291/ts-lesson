@@ -55,6 +55,40 @@ function autobind(
   return adjDescriptor;
 }
 
+// ProjectList Class //プロジェクトリストのクラス
+class ProjectList {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLElement;
+
+  constructor(private type: 'active' | 'finished') { //constructorで必要な要素への参照を取得
+    this.templateElement = document.getElementById(
+      'project-list',
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById('app')! as HTMLDivElement;
+
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true,
+    );
+    this.element = importedNode.firstElementChild as HTMLElement;
+    this.element.id = `${this.type}-projects`
+    this.attach()
+    this.renderContent();
+  };
+
+  private attach() {//画面描画する関数
+    this.hostElement.insertAdjacentElement('beforeend', this.element);
+  }
+
+  /** ul要素にidを付与*/
+  private renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector('ul')!.id = listId;
+    this.element.querySelector('h2')!.textContent = this.type === 'active' ? '実行中プロジェクト' : '完了プロジェクト'
+  }
+}
+
 // ProjectInput Class
 class ProjectInput {
   templateElement: HTMLTemplateElement;
@@ -142,3 +176,7 @@ class ProjectInput {
 
 
 const prjInput = new ProjectInput();
+
+const activePrjList = new ProjectList('active');
+const finishedProjList = new ProjectList('finished');
+
