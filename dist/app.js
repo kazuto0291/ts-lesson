@@ -6,6 +6,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+// projectの型-インスタンスを作りたいのでclassとして実装する
+var ProjectStatus;
+(function (ProjectStatus) {
+    ProjectStatus[ProjectStatus["Active"] = 0] = "Active";
+    ProjectStatus[ProjectStatus["Finished"] = 1] = "Finished";
+})(ProjectStatus || (ProjectStatus = {}));
+class Project {
+    constructor(id, title, manday, status) {
+        this.id = id;
+        this.title = title;
+        this.manday = manday;
+        this.status = status;
+    }
+}
 // Project State Management//プロジェクトの状態を管理する
 // 状態管理するクラスを作成
 class ProjectState {

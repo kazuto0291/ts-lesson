@@ -1,5 +1,17 @@
 // オブジェクト指向のアプローチですすめる
 
+
+// projectの型-インスタンスを作りたいのでclassとして実装する
+enum ProjectStatus {
+  Active, Finished
+}
+class Project {
+  constructor(public id: string, public title: string, public manday: number, public status: ProjectStatus,) {
+
+  }
+}
+
+
 // Project State Management//プロジェクトの状態を管理する
 // 状態管理するクラスを作成
 class ProjectState {
@@ -12,7 +24,7 @@ class ProjectState {
   }
 
   static getInstance() {
-    if(this.instance) {
+    if (this.instance) {
       return this.instance
     }
     this.instance = new ProjectState();
@@ -22,8 +34,8 @@ class ProjectState {
   addListener(listenerFn: Function) {
     this.listeners.push(listenerFn);
   }
-// プロジェクトの追加
-  addProject(title: string, description: string, manday:number) {
+  // プロジェクトの追加
+  addProject(title: string, description: string, manday: number) {
     const newProject = {
       id: Math.random().toString(),
       title: title,
@@ -131,7 +143,7 @@ class ProjectList {
   // プロジェクトの表示
   private renderProjects() {
     const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement;
-    for(const prjItem of this.assignedProjects) {
+    for (const prjItem of this.assignedProjects) {
       const listitem = document.createElement('li');
       listitem.textContent = prjItem.title;
       listEl.appendChild(listitem);
@@ -196,7 +208,7 @@ class ProjectInput {
       !validate(titleValidatable) ||
       !validate(descriptionValidatable) ||
       !validate(mandayValidatable)
-      ) {
+    ) {
       alert('入力値が正しくありません。再度お試しください。');
       return;
     } else {
@@ -207,7 +219,7 @@ class ProjectInput {
   private clearInput() {
     this.titleInputElement.value = '';
     this.descriptionInputElement.value = '';
-    this.mandayInputElement.value= '';
+    this.mandayInputElement.value = '';
   }
 
   @autobind
