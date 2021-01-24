@@ -106,27 +106,59 @@ function autobind(
   return adjDescriptor;
 }
 
+// Component Class
+  abstract class Component<T extends HTMLElement, U extends HTMLElement> {
+    templateElement: HTMLTemplateElement;
+    hostElement: T;
+    element: U;
+
+    constructor(
+      templateId: string,
+      hostElementId: string,
+      insertAtStart: boolean,
+      newElementId?: string
+      ) {
+      this.templateElement = document.getElementById(
+        templateId,
+      )! as HTMLTemplateElement;
+      this.hostElement = document.getElementById(hostElementId)! as T;
+
+      const importedNode = document.importNode(
+        this.templateElement.content,
+        true,
+      );
+      this.element = importedNode.firstElementChild as U;
+      if (newElementId) {//任意のパラメーターなので存在チェっクが必要
+        this.element.id = newElementId;
+      }
+      this.attach(insertAtStart);
+    }
+
+    abstract configure(): void;
+    abstract renderContent(): void;
+
+    private attach(insertAtBeginning: boolean) {//画面描画する関数
+      this.hostElement.insertAdjacentElement(
+        insertAtBeginning ? 'afterbegin' : 'beforeend',
+        this.element
+      );
+    }
+  }
+
+
 // ProjectList Class //プロジェクトリストのクラス
-class ProjectList {
-  templateElement: HTMLTemplateElement;
-  hostElement: HTMLDivElement;
-  element: HTMLElement;
+class ProjectList extends Component<HTMLDivElement,HTMLElement> {
   assignedProjects: Project[];
 
   constructor(private type: 'active' | 'finished') { //constructorで必要な要素への参照を取得
-    this.templateElement = document.getElementById(
-      'project-list',
-    )! as HTMLTemplateElement;
-    this.hostElement = document.getElementById('app')! as HTMLDivElement;
+    super('project-list', 'app', false, `${type}-projects`)
     this.assignedProjects = []; //初期化する
 
-    const importedNode = document.importNode(
-      this.templateElement.content,
-      true,
-    );
-    this.element = importedNode.firstElementChild as HTMLElement;
-    this.element.id = `${this.type}-projects`
+    this.configure();
+    this.renderContent();
+  };
 
+  configure() {
     projectState.addListener((projects: Project[]) => {
       const relevantProject = projects.filter(prj => {
         if (this.type === 'active') {
@@ -136,14 +168,14 @@ class ProjectList {
       })
       this.assignedProjects = relevantProject;
       this.renderProjects();
-    })
-
-    this.attach()
-    this.renderContent();
+    });
   };
 
-  private attach() {//画面描画する関数
-    this.hostElement.insertAdjacentElement('beforeend', this.element);
+  /** ul要素にidを付与*/
+  renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector('ul')!.id = listId;
+    this.element.querySelector('h2')!.textContent = this.type === 'active' ? '実行中プロジェクト' : '完了プロジェクト'
   }
 
   // プロジェクトの表示
@@ -155,13 +187,6 @@ class ProjectList {
       listitem.textContent = prjItem.title;
       listEl.appendChild(listitem);
     }
-  }
-
-  /** ul要素にidを付与*/
-  private renderContent() {
-    const listId = `${this.type}-projects-list`;
-    this.element.querySelector('ul')!.id = listId;
-    this.element.querySelector('h2')!.textContent = this.type === 'active' ? '実行中プロジェクト' : '完了プロジェクト'
   }
 }
 

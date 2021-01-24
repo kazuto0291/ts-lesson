@@ -84,16 +84,33 @@ function autobind(_target, _methodName, desciptor) {
     };
     return adjDescriptor;
 }
-// ProjectList Class //プロジェクトリストのクラス
-class ProjectList {
-    constructor(type) {
-        this.type = type;
-        this.templateElement = document.getElementById('project-list');
-        this.hostElement = document.getElementById('app');
-        this.assignedProjects = []; //初期化する
+// Component Class
+class Component {
+    constructor(templateId, hostElementId, insertAtStart, newElementId) {
+        this.templateElement = document.getElementById(templateId);
+        this.hostElement = document.getElementById(hostElementId);
         const importedNode = document.importNode(this.templateElement.content, true);
         this.element = importedNode.firstElementChild;
-        this.element.id = `${this.type}-projects`;
+        if (newElementId) { //任意のパラメーターなので存在チェっクが必要
+            this.element.id = newElementId;
+        }
+        this.attach(insertAtStart);
+    }
+    attach(insertAtBeginning) {
+        this.hostElement.insertAdjacentElement(insertAtBeginning ? 'afterbegin' : 'beforeend', this.element);
+    }
+}
+// ProjectList Class //プロジェクトリストのクラス
+class ProjectList extends Component {
+    constructor(type) {
+        super('project-list', 'app', false, `${type}-projects`);
+        this.type = type;
+        this.assignedProjects = []; //初期化する
+        this.configure();
+        this.renderContent();
+    }
+    ;
+    configure() {
         projectState.addListener((projects) => {
             const relevantProject = projects.filter(prj => {
                 if (this.type === 'active') {
@@ -104,12 +121,13 @@ class ProjectList {
             this.assignedProjects = relevantProject;
             this.renderProjects();
         });
-        this.attach();
-        this.renderContent();
     }
     ;
-    attach() {
-        this.hostElement.insertAdjacentElement('beforeend', this.element);
+    /** ul要素にidを付与*/
+    renderContent() {
+        const listId = `${this.type}-projects-list`;
+        this.element.querySelector('ul').id = listId;
+        this.element.querySelector('h2').textContent = this.type === 'active' ? '実行中プロジェクト' : '完了プロジェクト';
     }
     // プロジェクトの表示
     renderProjects() {
@@ -120,12 +138,6 @@ class ProjectList {
             listitem.textContent = prjItem.title;
             listEl.appendChild(listitem);
         }
-    }
-    /** ul要素にidを付与*/
-    renderContent() {
-        const listId = `${this.type}-projects-list`;
-        this.element.querySelector('ul').id = listId;
-        this.element.querySelector('h2').textContent = this.type === 'active' ? '実行中プロジェクト' : '完了プロジェクト';
     }
 }
 // ProjectInput Class
