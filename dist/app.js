@@ -20,11 +20,10 @@ class Project {
         this.status = status;
     }
 }
-// Project State Management//プロジェクトの状態を管理する
 // 状態管理するクラスを作成
 class ProjectState {
     constructor() {
-        this.listeners = [];
+        this.listeners = []; //関数を格納する
         this.projects = [];
     }
     static getInstance() {
@@ -40,7 +39,7 @@ class ProjectState {
     }
     // プロジェクトの追加
     addProject(title, description, manday) {
-        const newProject = new Project(Math.random.toString, title, manday, ProjectStatus.Active);
+        const newProject = new Project(Math.random().toString(), title, manday, ProjectStatus.Active);
         this.projects.push(newProject);
         for (const listenerFn of this.listeners) {
             listenerFn(this.projects.slice()); //コピーの配列を渡す。

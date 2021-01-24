@@ -6,16 +6,16 @@ enum ProjectStatus {
   Active, Finished
 }
 class Project {
-  constructor(public id: string, public title: string, public manday: number, public status: ProjectStatus,) {
-
-  }
+  constructor(public id: string, public title: string, public manday: number, public status: ProjectStatus,) {}
 }
 
 
 // Project State Management//プロジェクトの状態を管理する
+type Listener = (items: Project[]) => void; //カスタム型
+
 // 状態管理するクラスを作成
 class ProjectState {
-  private listeners: any[] = [];
+  private listeners: Listener[] = [];//関数を格納する
   private projects: Project[] = [];
   private static instance: ProjectState;
 
@@ -31,17 +31,17 @@ class ProjectState {
     return this.instance;
   }
   // イベントリスナーを管理に配列に追加する関数
-  addListener(listenerFn: Function) {
+  addListener(listenerFn: Listener) {
     this.listeners.push(listenerFn);
   }
   // プロジェクトの追加
   addProject(title: string, description: string, manday: number) {
     const newProject = new Project(
-      Math.random.toString,
+      Math.random().toString(),
       title,
       manday,
       ProjectStatus.Active
-     );
+    );
     this.projects.push(newProject);
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice());//コピーの配列を渡す。
@@ -127,7 +127,7 @@ class ProjectList {
     this.element = importedNode.firstElementChild as HTMLElement;
     this.element.id = `${this.type}-projects`
 
-    projectState.addListener((projects: any[]) => {
+    projectState.addListener((projects: Project[]) => {
       this.assignedProjects = projects;
       this.renderProjects();
     })
