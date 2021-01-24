@@ -141,19 +141,18 @@ class ProjectList extends Component {
     }
 }
 // ProjectInput Class
-class ProjectInput {
+class ProjectInput extends Component {
     constructor() {
-        this.templateElement = document.getElementById('project-input');
-        this.hostElement = document.getElementById('app');
-        const importedNode = document.importNode(this.templateElement.content, true);
-        this.element = importedNode.firstElementChild;
-        this.element.id = 'user-input';
+        super('project-input', 'app', true, 'user-input');
         this.titleInputElement = this.element.querySelector('#title');
         this.descriptionInputElement = this.element.querySelector('#description');
         this.mandayInputElement = this.element.querySelector('#manday');
         this.configure();
-        this.attach();
     }
+    configure() {
+        this.element.addEventListener('submit', this.submitHandler);
+    }
+    renderContent() { }
     /**
      * inputバリデーション関数
      * 返り値タプル型またはundifind型
@@ -204,13 +203,6 @@ class ProjectInput {
             // console.log(title, desc, manday);
             this.clearInput();
         }
-    }
-    //  privateはclassの内側からしかアクセスできない
-    configure() {
-        this.element.addEventListener('submit', this.submitHandler);
-    }
-    attach() {
-        this.hostElement.insertAdjacentElement('afterbegin', this.element);
     }
 }
 __decorate([

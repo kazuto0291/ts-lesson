@@ -191,26 +191,24 @@ class ProjectList extends Component<HTMLDivElement,HTMLElement> {
 }
 
 // ProjectInput Class
-class ProjectInput {
-  templateElement: HTMLTemplateElement;
-  hostElement: HTMLDivElement;
-  element: HTMLFormElement;
+class ProjectInput extends Component<HTMLDivElement, HTMLFormElement>{
   titleInputElement: HTMLInputElement;
   descriptionInputElement: HTMLInputElement;
   mandayInputElement: HTMLInputElement;
-  constructor() {// constructorは、要素の参照を行う
-    this.templateElement = document.getElementById('project-input')! as HTMLTemplateElement;
-    this.hostElement = document.getElementById('app')! as HTMLDivElement;
 
-    const importedNode = document.importNode(this.templateElement.content, true);
-    this.element = importedNode.firstElementChild as HTMLFormElement;
-    this.element.id = 'user-input'
+  constructor() {// constructorは、要素の参照を行う
+    super('project-input', 'app', true ,'user-input')
+
     this.titleInputElement = this.element.querySelector('#title') as HTMLInputElement;
     this.descriptionInputElement = this.element.querySelector('#description') as HTMLInputElement;
     this.mandayInputElement = this.element.querySelector('#manday') as HTMLInputElement;
     this.configure();
-    this.attach();
   }
+
+  public configure() {
+    this.element.addEventListener('submit', this.submitHandler);
+  }
+  renderContent() {}
 
   /**
    * inputバリデーション関数
@@ -268,13 +266,7 @@ class ProjectInput {
     }
   }
   //  privateはclassの内側からしかアクセスできない
-  private configure() {
-    this.element.addEventListener('submit', this.submitHandler);
-  }
 
-  private attach() {
-    this.hostElement.insertAdjacentElement('afterbegin', this.element);
-  }
 }
 
 
