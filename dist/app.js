@@ -114,6 +114,7 @@ class ProjectList {
     // プロジェクトの表示
     renderProjects() {
         const listEl = document.getElementById(`${this.type}-projects-list`);
+        listEl.innerHTML = ''; //リストをクリアにしてもう一度０から追加
         for (const prjItem of this.assignedProjects) {
             const listitem = document.createElement('li');
             listitem.textContent = prjItem.title;
