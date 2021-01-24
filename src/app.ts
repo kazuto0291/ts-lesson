@@ -16,7 +16,7 @@ class Project {
 // 状態管理するクラスを作成
 class ProjectState {
   private listeners: any[] = [];
-  private projects: any[] = [];
+  private projects: Project[] = [];
   private static instance: ProjectState;
 
   private constructor() {
@@ -36,12 +36,12 @@ class ProjectState {
   }
   // プロジェクトの追加
   addProject(title: string, description: string, manday: number) {
-    const newProject = {
-      id: Math.random().toString(),
-      title: title,
-      description: description,
-      manday: manday,
-    }
+    const newProject = new Project(
+      Math.random.toString,
+      title,
+      manday,
+      ProjectStatus.Active
+     );
     this.projects.push(newProject);
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice());//コピーの配列を渡す。
@@ -111,7 +111,7 @@ class ProjectList {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLElement;
-  assignedProjects: any[];
+  assignedProjects: Project[];
 
   constructor(private type: 'active' | 'finished') { //constructorで必要な要素への参照を取得
     this.templateElement = document.getElementById(

@@ -40,12 +40,7 @@ class ProjectState {
     }
     // プロジェクトの追加
     addProject(title, description, manday) {
-        const newProject = {
-            id: Math.random().toString(),
-            title: title,
-            description: description,
-            manday: manday,
-        };
+        const newProject = new Project(Math.random.toString, title, manday, ProjectStatus.Active);
         this.projects.push(newProject);
         for (const listenerFn of this.listeners) {
             listenerFn(this.projects.slice()); //コピーの配列を渡す。
