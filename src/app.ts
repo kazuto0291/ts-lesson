@@ -1,5 +1,44 @@
 // オブジェクト指向のアプローチですすめる
 
+// Project State Management//プロジェクトの状態を管理する
+// 状態管理するクラスを作成
+class ProjectState {
+  private listeners: any[] = [];
+  private projects: any[] = [];
+  private static instance: ProjectState;
+
+  private constructor() {
+
+  }
+
+  static getInstance() {
+    if(this.instance) {
+      return this.instance
+    }
+    this.instance = new ProjectState();
+    return this.instance;
+  }
+  // イベントリスナーを管理に配列に追加する関数
+  addListener(listenerFn: Function) {
+    this.listeners.push(listenerFn);
+  }
+// プロジェクトの追加
+  addProject(title: string, description: string, manday:number) {
+    const newProject = {
+      id: Math.random().toString(),
+      title: title,
+      description: description,
+      manday: manday,
+    }
+    this.projects.push(newProject);
+    for (const listenerFn of this.listeners) {
+      listenerFn(this.projects.slice());//コピーの配列を渡す。
+    }
+  }
+}
+
+const projectState = ProjectState.getInstance();
+
 // Validation:バリデーションのロジック
 // validatabaleのインターフェースを作成
 interface Validatable {
@@ -60,12 +99,14 @@ class ProjectList {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLElement;
+  assignedProjects: any[];
 
   constructor(private type: 'active' | 'finished') { //constructorで必要な要素への参照を取得
     this.templateElement = document.getElementById(
       'project-list',
     )! as HTMLTemplateElement;
     this.hostElement = document.getElementById('app')! as HTMLDivElement;
+    this.assignedProjects = []; //初期化する
 
     const importedNode = document.importNode(
       this.templateElement.content,
@@ -73,12 +114,28 @@ class ProjectList {
     );
     this.element = importedNode.firstElementChild as HTMLElement;
     this.element.id = `${this.type}-projects`
+
+    projectState.addListener((projects: any[]) => {
+      this.assignedProjects = projects;
+      this.renderProjects();
+    })
+
     this.attach()
     this.renderContent();
   };
 
   private attach() {//画面描画する関数
     this.hostElement.insertAdjacentElement('beforeend', this.element);
+  }
+
+  // プロジェクトの表示
+  private renderProjects() {
+    const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement;
+    for(const prjItem of this.assignedProjects) {
+      const listitem = document.createElement('li');
+      listitem.textContent = prjItem.title;
+      listEl.appendChild(listitem);
+    }
   }
 
   /** ul要素にidを付与*/
@@ -160,7 +217,9 @@ class ProjectInput {
     const userInput = this.gatherUserInput();
     if (Array.isArray(userInput)) { //userInputがタプル型が確かめるために配列かどうか確かめる。
       const [title, desc, manday] = userInput;
-      console.log(title, desc, manday);
+      // 状態を管理するクラスのaddProject関数を使う（プロジェクトの追加）
+      projectState.addProject(title, desc, manday);
+      // console.log(title, desc, manday);
       this.clearInput();
     }
   }
