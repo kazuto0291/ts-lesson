@@ -20,10 +20,19 @@ class Project {
         this.status = status;
     }
 }
-// 状態管理するクラスを作成
-class ProjectState {
+class State {
     constructor() {
         this.listeners = []; //関数を格納する
+    }
+    // イベントリスナーを管理に配列に追加する関数
+    addListener(listenerFn) {
+        this.listeners.push(listenerFn);
+    }
+}
+// 状態管理するクラスを作成
+class ProjectState extends State {
+    constructor() {
+        super();
         this.projects = [];
     }
     static getInstance() {
@@ -32,10 +41,6 @@ class ProjectState {
         }
         this.instance = new ProjectState();
         return this.instance;
-    }
-    // イベントリスナーを管理に配列に追加する関数
-    addListener(listenerFn) {
-        this.listeners.push(listenerFn);
     }
     // プロジェクトの追加
     addProject(title, description, manday) {

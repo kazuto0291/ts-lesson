@@ -11,16 +11,24 @@ class Project {
 
 
 // Project State Management//プロジェクトの状態を管理する
-type Listener = (items: Project[]) => void; //カスタム型
+type Listener<T> = (items: T[]) => void; //カスタム型
+
+class State<T> {
+  protected listeners: Listener<T>[] = [];//関数を格納する
+  // イベントリスナーを管理に配列に追加する関数
+  addListener(listenerFn: Listener<T>) {
+    this.listeners.push(listenerFn);
+  }
+
+}
 
 // 状態管理するクラスを作成
-class ProjectState {
-  private listeners: Listener[] = [];//関数を格納する
+class ProjectState extends State<Project>{
   private projects: Project[] = [];
   private static instance: ProjectState;
 
   private constructor() {
-
+    super();
   }
 
   static getInstance() {
@@ -30,10 +38,7 @@ class ProjectState {
     this.instance = new ProjectState();
     return this.instance;
   }
-  // イベントリスナーを管理に配列に追加する関数
-  addListener(listenerFn: Listener) {
-    this.listeners.push(listenerFn);
-  }
+
   // プロジェクトの追加
   addProject(title: string, description: string, manday: number) {
     const newProject = new Project(
