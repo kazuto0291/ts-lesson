@@ -6,7 +6,13 @@ enum ProjectStatus {
   Active, Finished
 }
 class Project {
-  constructor(public id: string, public title: string, public manday: number, public status: ProjectStatus,) {}
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public manday: number,
+    public status:ProjectStatus,
+    ) {}
 }
 
 
@@ -44,6 +50,7 @@ class ProjectState extends State<Project>{
     const newProject = new Project(
       Math.random().toString(),
       title,
+      description,
       manday,
       ProjectStatus.Active
     );
@@ -151,6 +158,26 @@ function autobind(
   }
 
 
+// ProjectItem Class
+// 一つ一つのプロジェクトをリストの項目として表示する為のクラス
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
+  private project: Project;
+  constructor(hostId: string, project: Project) {
+    super('single-project', hostId, false, project.id);
+    this.project = project;
+
+    this.configure();
+    this.renderContent();
+  }
+
+  configure() {}
+  renderContent() {
+    this.element.querySelector('h2')!.textContent = this.project.title;
+    this.element.querySelector('h3')!.textContent = this.project.manday.toString();
+    this.element.querySelector('p')!.textContent = this.project.description;
+  }
+}
+
 // ProjectList Class //プロジェクトリストのクラス
 class ProjectList extends Component<HTMLDivElement,HTMLElement> {
   assignedProjects: Project[];
@@ -188,9 +215,7 @@ class ProjectList extends Component<HTMLDivElement,HTMLElement> {
     const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement;
     listEl.innerHTML = '';//リストをクリアにしてもう一度０から追加
     for (const prjItem of this.assignedProjects) {
-      const listitem = document.createElement('li');
-      listitem.textContent = prjItem.title;
-      listEl.appendChild(listitem);
+      new ProjectItem(listEl.id, prjItem);
     }
   }
 }
