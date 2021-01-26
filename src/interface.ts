@@ -43,3 +43,17 @@ user1 = {
     console.log(phrase + '' + this.name);
   },
 };
+
+
+interface Bread {
+  calories: number
+}
+
+interface Bread {
+  type: string
+}
+
+const francePan: Bread = {
+  type:"hard",
+  calories: 88
+}
