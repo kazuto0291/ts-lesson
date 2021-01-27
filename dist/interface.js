@@ -27,4 +27,8 @@ user1 = {
         console.log(phrase + '' + this.name);
     },
 };
+const francePan = {
+    type: "hard",
+    calories: 88
+};
 //# sourceMappingURL=interface.js.map
