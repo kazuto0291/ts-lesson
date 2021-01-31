@@ -47,6 +47,18 @@ class ProjectState extends State {
     addProject(title, description, manday) {
         const newProject = new Project(Math.random().toString(), title, description, manday, ProjectStatus.Active);
         this.projects.push(newProject);
+        this.updateListeners();
+    }
+    // drag&dropでProjectのステータスを変更する関数
+    moveProject(projectId, newStatus) {
+        const project = this.projects.find(project => project.id === projectId); //見つけたらtrueが還る。
+        if (project && project.status !== newStatus) { //projectがnullじゃなければ＆＆statusが本当に変わったかどうかのチェック
+            project.status = newStatus;
+            this.updateListeners();
+        }
+    }
+    // 一覧を再表示する関数
+    updateListeners() {
         for (const listenerFn of this.listeners) {
             listenerFn(this.projects.slice()); //コピーの配列を渡す。
         }
@@ -162,6 +174,7 @@ class ProjectList extends Component {
     }
     dropHandler(event) {
         const projectId = event.dataTransfer.getData('text/plain');
+        projectState.moveProject(projectId, this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished);
     }
     dragLeaveHandler(event) {
         const listEl = this.element.querySelector('ul');
@@ -201,6 +214,9 @@ class ProjectList extends Component {
 __decorate([
     autobind
 ], ProjectList.prototype, "dragOverHandler", null);
+__decorate([
+    autobind
+], ProjectList.prototype, "dropHandler", null);
 __decorate([
     autobind
 ], ProjectList.prototype, "dragLeaveHandler", null);

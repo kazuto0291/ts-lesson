@@ -65,6 +65,19 @@ class ProjectState extends State<Project>{
       ProjectStatus.Active
     );
     this.projects.push(newProject);
+    this.updateListeners();
+  }
+
+  // drag&dropでProjectのステータスを変更する関数
+  moveProject(projectId: string, newStatus: ProjectStatus) {
+    const project = this.projects.find(project => project.id === projectId); //見つけたらtrueが還る。
+    if (project && project.status !== newStatus) { //projectがnullじゃなければ＆＆statusが本当に変わったかどうかのチェック
+      project.status = newStatus;
+      this.updateListeners();
+    }
+  }
+  // 一覧を再表示する関数
+  private updateListeners() {
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice());//コピーの配列を渡す。
     }
@@ -231,8 +244,10 @@ class ProjectList extends Component<HTMLDivElement,HTMLElement> implements DragT
     }
   }
 
+  @autobind
   dropHandler(event: DragEvent) {
     const projectId = event.dataTransfer!.getData('text/plain');
+    projectState.moveProject(projectId, this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished);
   }
 
   @autobind
