@@ -145,4 +145,4 @@ function createCourseGoal(title: string, description: string, date: Date):Course
 
 // 下記は文字列の配列ですが、読み取り専用の文字列の配列である
 const namesss: Readonly<string[]> = ['Max', 'Anna'];
-namesss.push('Tom'); //
+namesss.push('Tom')
