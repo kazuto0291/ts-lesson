@@ -37,6 +37,24 @@ class ProjectInput {
     this.attach();
   }
 
+  private gatherUserInput(): [string, string, number] | void {
+    const enteredTitle = this.titleInputElement.value;
+    const enteredDescription = this.descriptionInputElement.value;
+    const enteredManday = this.mandayInputElement.value;
+    if (enteredTitle.trim().length === 0 || enteredDescription.trim().length === 0 || enteredManday.trim().length === 0 ) {
+      alert('入力値が正しくありません。再度お試しください。');
+      return ;
+    } else {
+      return [enteredTitle, enteredDescription, parseFloat(enteredManday)];
+    }
+  }
+
+  private clearInputs() {
+    this.titleInputElement.value = '';
+    this.descriptionInputElement.value = '';
+    this.mandayInputElement.value = '';
+  }
+
   private attach() {
     this.hostElement.insertAdjacentElement('afterbegin', this.element);
   }
@@ -44,7 +62,12 @@ class ProjectInput {
   @autobind
   private submitHandler(event: Event) {
     event.preventDefault();
-    console.log(this.titleInputElement.value);
+    const userInput = this.gatherUserInput();
+    if ( Array.isArray(userInput)) {
+      const [title, desc, manday] = userInput;
+      console.log(title, desc, manday);
+      this.clearInputs();
+    }
   }
 
   private configure() {
