@@ -26,4 +26,18 @@ function add(a: Combineable, b: Combineable) {
 const result3 = add(1, 5);
 const result2 = add('Hello', 'TypeScript');
 
-result2.split('')
+// result2.split('')
+
+function dadd(a: number, b: number): number;
+function dadd(a: string, b: string): string;
+function dadd(a: string, b: number): string;
+function dadd(a: number, b: string): string;
+function dadd(a: Combinable, b:Combinable) {
+  if (typeof a === 'string' || typeof b === 'string') {
+    return a.toString() + b.toString();
+  }
+  return a + b;
+
+}
+const result4 = dadd('Hello', 'Typesctipt') ;
+result4.split('');
