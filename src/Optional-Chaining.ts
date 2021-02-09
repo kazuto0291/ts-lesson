@@ -14,3 +14,16 @@ console.log(fetchedUserData?.job.title);
 // もしこのfetchedUserDataのオブジェクトが存在する場合ならjobプロパティーにアクセスします
 console.log(fetchedUserData?.job.title);
 // もしこのfetchedUserDataのオブジェクトが存在する場合ならjobプロパティーにアクセスします
+
+
+const fetchAnimalData = {
+  id: 'ani1',
+  name: 'tama',
+  animalKind: {
+    animal: 'cat',
+    kind: 'SUKOTELISYU'
+  }
+}
+
+console.log(fetchAnimalData.animalKind.animal);
+console.log(fetchAnimalData?.animalKind)
