@@ -25,8 +25,9 @@ function validate(validatableInput) {
     }
     // 最大値のチェックをする
     if (validatableInput.max != null && typeof validatableInput.value === 'number') {
-        isValid && validatableInput.value <= validatableInput.max;
+        isValid = isValid && validatableInput.value <= validatableInput.max;
     }
+    return isValid;
 }
 //  autobind decorator
 function autobind(_, _2, descriptor) {
@@ -58,10 +59,25 @@ class ProjectInput {
         const enteredTitle = this.titleInputElement.value;
         const enteredDescription = this.descriptionInputElement.value;
         const enteredManday = this.mandayInputElement.value;
+        const titleValidatable = {
+            value: enteredTitle,
+            required: true,
+        };
+        const descriptionValidatable = {
+            value: enteredDescription,
+            required: true,
+            minLength: 5,
+        };
+        const mandayValidatable = {
+            value: +enteredManday,
+            required: true,
+            min: 1,
+            max: 1000,
+        };
         // 空白ではないことをチェックする
-        if (validate({ value: enteredTitle, required: true, minLength: 5 }) &&
-            validate({ value: enteredDescription, required: true, minLength: 5 }) &&
-            validate({ value: enteredManday, required: true, minLength: 5 })) {
+        if (!validate(titleValidatable) ||
+            !validate(descriptionValidatable) ||
+            !validate(mandayValidatable)) {
             alert('入力値が正しくありません。再度お試しください。');
             return;
         }
