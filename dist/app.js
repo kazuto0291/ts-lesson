@@ -5,6 +5,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+function validate(validatableInput) {
+    let isValid = true;
+    // 空白ではないか確認する
+    if (validatableInput.required) {
+        isValid = isValid && validatableInput.value.toString().trim().length !== 0;
+    }
+    // 最小文字数のチェックをする
+    if (validatableInput.minLength != null && typeof validatableInput.value === 'string') {
+        isValid = isValid && validatableInput.value.length >= validatableInput.minLength;
+    }
+    // 最大文字数のチェックをする ()
+    if (validatableInput.maxLength != null && typeof validatableInput.value === 'string') {
+        isValid = isValid && validatableInput.value.length <= validatableInput.maxLength;
+    }
+    // 最小値のチェックをする
+    if (validatableInput.min != null && typeof validatableInput.value === 'number') {
+        isValid = isValid && validatableInput.value >= validatableInput.min;
+    }
+    // 最大値のチェックをする
+    if (validatableInput.max != null && typeof validatableInput.value === 'number') {
+        isValid && validatableInput.value <= validatableInput.max;
+    }
+}
 //  autobind decorator
 function autobind(_, _2, descriptor) {
     const originalMethod = descriptor.value;
@@ -35,7 +58,10 @@ class ProjectInput {
         const enteredTitle = this.titleInputElement.value;
         const enteredDescription = this.descriptionInputElement.value;
         const enteredManday = this.mandayInputElement.value;
-        if (enteredTitle.trim().length === 0 || enteredDescription.trim().length === 0 || enteredManday.trim().length === 0) {
+        // 空白ではないことをチェックする
+        if (validate({ value: enteredTitle, required: true, minLength: 5 }) &&
+            validate({ value: enteredDescription, required: true, minLength: 5 }) &&
+            validate({ value: enteredManday, required: true, minLength: 5 })) {
             alert('入力値が正しくありません。再度お試しください。');
             return;
         }
